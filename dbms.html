@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Monolith vs. Microservices</title>
+    <title>Monolith vs. Microservices: A Nepali Perspective</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -32,10 +32,12 @@
             display: none;
             flex-grow: 1;
             overflow-y: auto;
+            padding: 2rem 2.5rem;
         }
         .slide.active {
             display: flex;
             flex-direction: column;
+            justify-content: center;
         }
         .slide-container {
             width: 100%;
@@ -44,7 +46,7 @@
             background-color: #1f2937; /* bg-gray-800 */
             border-radius: 1rem;
             box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
-            border: 1px solid #374151; /* border-gray-700 */
+            border: 1px solid #4b5563; /* border-gray-600 */
             display: flex;
             flex-direction: column;
             overflow: hidden;
@@ -59,295 +61,287 @@
             border: none;
             aspect-ratio: auto;
         }
-        body:fullscreen #main-container {
-            padding: 0;
-            height: 100%;
-            width: 100%;
-        }
-        body:fullscreen .slide {
-            padding: 2rem 4rem;
-        }
+        body:fullscreen #main-container { padding: 0; height: 100%; width: 100%; }
+        body:fullscreen #footer { display: none; }
+        body:fullscreen .slide { padding: 2rem 4rem; }
 
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        .active {
-            animation: fadeIn 0.5s ease-in-out;
-        }
-        .analogy-box {
-            background-color: rgba(3, 105, 161, 0.2); /* cyan-800 with opacity */
-            border-left: 4px solid #0e7490; /* cyan-600 */
-        }
+        /* Animations & Dynamic Elements */
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .active { animation: fadeIn 0.6s ease-in-out; }
+        .animated-item { animation: slideUp 0.7s ease-out both; }
+        .hover-lift:hover { transform: translateY(-5px); box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.2), 0 4px 6px -4px rgb(0 0 0 / 0.1); }
+        .transition-all { transition: all 0.3s ease-in-out; }
+
+        /* Footer Styles */
+        #footer { margin-top: 1.5rem; padding: 1rem; text-align: center; width: 100%; max-width: 1000px; }
+        #footer .developer-name { font-family: 'Playfair Display', serif; font-size: 1.25rem; color: #e5e7eb; margin-bottom: 0.25rem; }
+        #footer .copyright { font-size: 0.875rem; color: #6b7280; }
     </style>
 </head>
 <body>
 
     <div id="main-container">
-        <!-- Slide Container -->
         <div id="presentation-container" class="slide-container">
             
             <!-- Slide 1: Title -->
-            <div id="slide-1" class="slide active p-8 sm:p-12 lg:p-16 items-center justify-center text-center bg-gradient-to-br from-cyan-900 to-gray-800">
-                <h1 class="text-4xl sm:text-5xl lg:text-7xl font-bold text-white leading-tight">Monolith vs. Microservices</h1>
-                <p class="mt-4 text-lg sm:text-xl lg:text-2xl text-cyan-300">A Tale of Two Architectures</p>
-                <div class="mt-12 text-sm text-gray-400">An engaging guide to software design patterns</div>
+            <div id="slide-1" class="slide active items-center text-center bg-gradient-to-br from-purple-900 to-gray-800">
+                <h1 class="text-4xl sm:text-5xl lg:text-7xl font-bold text-white leading-tight" style="font-family: 'Playfair Display', serif;">Monolith vs. Microservices</h1>
+                <p class="mt-4 text-lg sm:text-xl lg:text-2xl text-purple-300">A Nepali Perspective on Software Architecture</p>
             </div>
 
-            <!-- Slide 2: The Analogy -->
-            <div id="slide-2" class="slide p-8 sm:p-12 lg:p-16 justify-center">
-                <h2 class="text-3xl sm:text-4xl font-bold text-cyan-400 mb-6">Let's Build a Retail Empire</h2>
-                <p class="text-lg text-gray-300 mb-8">To understand software architecture, let's use a real-world analogy. Imagine we're building a large retail business. We need departments for:</p>
+            <!-- Slide 2: Setting the Scene -->
+            <div id="slide-2" class="slide">
+                <h2 class="text-3xl font-bold text-purple-400 mb-6 animated-item">The Digital Boom in Nepal</h2>
+                <p class="text-lg text-gray-300 mb-8 animated-item" style="animation-delay: 150ms;">Nepal's digital economy is growing rapidly. From ordering food to paying bills, software is everywhere. But how should we build these complex apps?</p>
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-                    <div class="bg-gray-700 p-4 rounded-lg"><span class="text-2xl">🛒</span><p>Products</p></div>
-                    <div class="bg-gray-700 p-4 rounded-lg"><span class="text-2xl">💳</span><p>Payments</p></div>
-                    <div class="bg-gray-700 p-4 rounded-lg"><span class="text-2xl">🚚</span><p>Shipping</p></div>
-                    <div class="bg-gray-700 p-4 rounded-lg"><span class="text-2xl">👤</span><p>Users</p></div>
+                    <div class="bg-gray-700 p-4 rounded-lg animated-item hover-lift transition-all" style="animation-delay: 300ms;"><span class="text-3xl">🛍️</span><p class="mt-2 font-semibold">Daraz</p></div>
+                    <div class="bg-gray-700 p-4 rounded-lg animated-item hover-lift transition-all" style="animation-delay: 400ms;"><span class="text-3xl">🛵</span><p class="mt-2 font-semibold">Pathao</p></div>
+                    <div class="bg-gray-700 p-4 rounded-lg animated-item hover-lift transition-all" style="animation-delay: 500ms;"><span class="text-3xl">💸</span><p class="mt-2 font-semibold">eSewa/Khalti</p></div>
+                    <div class="bg-gray-700 p-4 rounded-lg animated-item hover-lift transition-all" style="animation-delay: 600ms;"><span class="text-3xl">🍔</span><p class="mt-2 font-semibold">Foodmandu</p></div>
                 </div>
-                <p class="mt-8 text-xl text-center text-cyan-300">There are two main ways we can structure our empire...</p>
+            </div>
+            
+            <!-- Slide 3: The Core Challenge -->
+            <div id="slide-3" class="slide">
+                <h2 class="text-3xl font-bold text-purple-400 mb-6 animated-item">The Core Challenge: How to Build?</h2>
+                <p class="text-lg text-gray-300 mb-8 animated-item" style="animation-delay: 150ms;">Imagine we want to build a new "Super App". We have two main blueprints we can follow. Let's explore them using analogies we all know.</p>
+                <div class="grid md:grid-cols-2 gap-8 text-center">
+                    <div class="animated-item" style="animation-delay: 300ms;">
+                        <h3 class="text-2xl font-bold text-white mb-3">Approach 1: The Monolith</h3>
+                        <p class="text-lg text-purple-300">Everything under one giant roof.</p>
+                    </div>
+                    <div class="animated-item" style="animation-delay: 450ms;">
+                        <h3 class="text-2xl font-bold text-white mb-3">Approach 2: Microservices</h3>
+                        <p class="text-lg text-purple-300">A collection of specialized shops.</p>
+                    </div>
+                </div>
             </div>
 
-            <!-- Slide 3: The Monolith -->
-            <div id="slide-3" class="slide p-8 sm:p-12 lg:p-16 justify-center">
-                <h2 class="text-3xl sm:text-4xl font-bold text-cyan-400 mb-6">Approach 1: The Monolith</h2>
-                <p class="text-lg text-gray-300 mb-4">A monolith is a single, unified application. All features (Products, Payments, etc.) are built, deployed, and run as one large unit.</p>
-                <div class="analogy-box p-4 rounded-r-lg mb-6">
-                    <p class="font-bold text-cyan-300">Real-World Analogy: The All-in-One Department Store</p>
-                    <p class="text-gray-300">Everything is under one roof, in one massive building. All departments share the same foundation, utilities, and entrance.</p>
+            <!-- Slide 4: The Monolith Analogy -->
+            <div id="slide-4" class="slide">
+                <h2 class="text-3xl font-bold text-purple-400 mb-4 animated-item">The Monolith: The Bhat-Bhateni Model</h2>
+                <p class="text-lg text-gray-300 mb-6 animated-item" style="animation-delay: 150ms;">A monolith is a single, unified application. All its parts are interconnected and run as one unit.</p>
+                <div class="bg-purple-900/30 border-l-4 border-purple-400 p-4 rounded-r-lg mb-6 animated-item" style="animation-delay: 300ms;">
+                    <p class="font-bold text-purple-300">Analogy: A Bhat-Bhateni Superstore</p>
+                    <p class="text-gray-300">One enormous building. Groceries, electronics, clothing, and the food court are all departments sharing the same foundation, security, and power supply. They are all part of "Bhat-Bhateni".</p>
                 </div>
-                <div class="bg-gray-700 p-6 rounded-lg flex flex-col items-center">
-                    <h3 class="font-bold mb-2">Monolithic Application</h3>
-                    <div class="w-full max-w-md bg-gray-600 p-4 rounded-lg border-2 border-gray-500 flex flex-col items-center">
-                        <div class="text-white font-bold mb-2">MyRetailApp.exe</div>
+            </div>
+
+            <!-- Slide 5: Anatomy of a Monolith -->
+            <div id="slide-5" class="slide items-center">
+                <div class="w-full max-w-lg bg-gray-700 p-6 rounded-lg flex flex-col items-center animated-item">
+                    <h3 class="font-bold text-xl mb-4 text-white">Monolithic "SuperApp"</h3>
+                    <div class="w-full bg-gray-600 p-4 rounded-lg border-2 border-gray-500 flex flex-col items-center">
                         <div class="w-full grid grid-cols-2 gap-2 text-center text-sm">
-                           <div class="bg-cyan-800 p-2 rounded">Product Service</div>
-                           <div class="bg-cyan-800 p-2 rounded">Payment Service</div>
-                           <div class="bg-cyan-800 p-2 rounded">Shipping Service</div>
-                           <div class="bg-cyan-800 p-2 rounded">User Service</div>
+                           <div class="bg-purple-800 p-3 rounded">User Accounts</div>
+                           <div class="bg-purple-800 p-3 rounded">E-commerce</div>
+                           <div class="bg-purple-800 p-3 rounded">Ride-Sharing</div>
+                           <div class="bg-purple-800 p-3 rounded">Bill Payments</div>
                         </div>
-                        <div class="w-full bg-gray-500 p-2 mt-2 rounded">Shared Database</div>
+                        <div class="w-full bg-gray-500 p-3 mt-2 rounded font-semibold">Shared Database</div>
+                    </div>
+                    <p class="text-sm mt-4 text-gray-400">Everything is tightly coupled in one large application.</p>
+                </div>
+            </div>
+
+            <!-- Slide 6: Monolith Pros & Cons -->
+            <div id="slide-6" class="slide">
+                 <h2 class="text-3xl font-bold text-purple-400 mb-6">The Bhat-Bhateni Model: Pros & Cons</h2>
+                 <div class="grid md:grid-cols-2 gap-8">
+                    <div class="animated-item" style="animation-delay: 100ms;">
+                        <h3 class="text-2xl font-bold text-green-400 mb-3">Advantages</h3>
+                        <ul class="list-disc list-inside text-gray-300 space-y-3 text-lg">
+                            <li><strong>Simple Start:</strong> Easy to design and build the first branch.</li>
+                            <li><strong>Easy Testing:</strong> Just walk through the whole store to check everything.</li>
+                            <li><strong>Simple Deployment:</strong> Just "open the doors" of the one building.</li>
+                        </ul>
+                    </div>
+                    <div class="animated-item" style="animation-delay: 250ms;">
+                        <h3 class="text-2xl font-bold text-red-400 mb-3">Disadvantages</h3>
+                        <ul class="list-disc list-inside text-gray-300 space-y-3 text-lg">
+                            <li><strong>Scaling Issues:</strong> If the grocery section is packed for Dashain, you can't just expand it. You have to expand the whole building.</li>
+                            <li><strong>Single Point of Failure:</strong> A generator problem (बत्ती गयो!) shuts down the entire store.</li>
+                            <li><strong>Slow to Update:</strong> Renovating the clothing section requires careful planning that might disrupt the whole store.</li>
+                        </ul>
+                    </div>
+                 </div>
+            </div>
+            
+            <!-- Slide 7: Microservices Analogy -->
+            <div id="slide-7" class="slide">
+                <h2 class="text-3xl font-bold text-purple-400 mb-4 animated-item">Microservices: The Labim Mall Model</h2>
+                <p class="text-lg text-gray-300 mb-6 animated-item" style="animation-delay: 150ms;">A microservice architecture breaks an application into many small, independent services.</p>
+                <div class="bg-purple-900/30 border-l-4 border-purple-400 p-4 rounded-r-lg mb-6 animated-item" style="animation-delay: 300ms;">
+                    <p class="font-bold text-purple-300">Analogy: A Modern Shopping Mall (like Labim or Civil Mall)</p>
+                    <p class="text-gray-300">A collection of independent shops. Levis, QFX Cinemas, and the Food Court are all separate businesses. They can redecorate, hire staff, or even close without affecting the other shops.</p>
+                </div>
+            </div>
+            
+            <!-- Slide 8: Anatomy of Microservices -->
+            <div id="slide-8" class="slide items-center">
+                 <div class="w-full max-w-2xl text-center animated-item">
+                    <h3 class="font-bold text-xl mb-4 text-white">Microservice "SuperApp"</h3>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        <div class="bg-gray-700 p-4 rounded-lg border-2 border-purple-600 hover-lift transition-all">UserService.api</div>
+                        <div class="bg-gray-700 p-4 rounded-lg border-2 border-purple-600 hover-lift transition-all">ShopService.api</div>
+                        <div class="bg-gray-700 p-4 rounded-lg border-2 border-purple-600 hover-lift transition-all">RideService.api</div>
+                        <div class="bg-gray-700 p-4 rounded-lg border-2 border-purple-600 hover-lift transition-all">PaymentService.api</div>
+                    </div>
+                    <p class="text-sm mt-4 text-gray-400">Each service is an independent application that communicates with others.</p>
+                 </div>
+            </div>
+
+            <!-- NEW Slide 9: How Microservices Talk -->
+            <div id="slide-9" class="slide">
+                <h2 class="text-3xl font-bold text-purple-400 mb-6">How Do The Shops Talk?</h2>
+                <p class="text-lg text-gray-300 mb-6">If the shops are separate, how do they work together? They need to communicate.</p>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="bg-gray-700 p-4 rounded-lg animated-item" style="animation-delay: 100ms;">
+                        <h3 class="font-bold text-white mb-2 flex items-center"><span class="text-2xl mr-3">📞</span> Direct Call (API)</h3>
+                        <p>One shop calls another directly for an answer.</p>
+                        <p class="text-sm text-purple-300 mt-2"><strong>Analogy:</strong> QFX calls the pizza place: "Do you have a large pizza?" and waits for a "Yes/No". It's fast, but QFX is stuck waiting for the answer.</p>
+                    </div>
+                    <div class="bg-gray-700 p-4 rounded-lg animated-item" style="animation-delay: 250ms;">
+                        <h3 class="font-bold text-white mb-2 flex items-center"><span class="text-2xl mr-3">📬</span> Message Board (Queue)</h3>
+                        <p>One shop leaves a message for another to see later.</p>
+                        <p class="text-sm text-purple-300 mt-2"><strong>Analogy:</strong> Daraz posts an order on a notice board. A delivery partner (like a Pathao rider) sees the notice, picks up the package, and delivers it. Daraz doesn't wait; it can process the next order immediately.</p>
                     </div>
                 </div>
             </div>
 
-            <!-- Slide 4: Monolith Pros & Cons -->
-            <div id="slide-4" class="slide p-8 sm:p-12 lg:p-16 justify-center">
-                 <h2 class="text-3xl sm:text-4xl font-bold text-cyan-400 mb-6">The Department Store: Pros & Cons</h2>
+            <!-- Slide 10: Microservices Pros & Cons -->
+            <div id="slide-10" class="slide">
+                 <h2 class="text-3xl font-bold text-purple-400 mb-6">The Labim Mall Model: Pros & Cons</h2>
                  <div class="grid md:grid-cols-2 gap-8">
-                    <div>
+                    <div class="animated-item" style="animation-delay: 100ms;">
                         <h3 class="text-2xl font-bold text-green-400 mb-3">Advantages</h3>
-                        <ul class="list-disc list-inside text-gray-300 space-y-4 text-lg">
-                            <li><strong>Simple to Build:</strong> Easier to design and get started. <span class="text-sm text-gray-400">(Just need one building permit).</span></li>
-                            <li><strong>Easy to Test:</strong> You can test the entire store at once. <span class="text-sm text-gray-400">(Just walk through all departments).</span></li>
-                            <li><strong>Simple to Deploy:</strong> One application to run. <span class="text-sm text-gray-400">(Just open the main doors).</span></li>
+                        <ul class="list-disc list-inside text-gray-300 space-y-3 text-lg">
+                            <li><strong>Independent Scaling:</strong> If QFX is sold out, only that service needs more resources.</li>
+                            <li><strong>Resilience:</strong> If the pizza place closes, you can still go shopping or watch a movie.</li>
+                            <li><strong>Tech Freedom:</strong> The cinema uses projectors; a store uses cash registers. Best tool for each job.</li>
                         </ul>
                     </div>
-                    <div>
+                    <div class="animated-item" style="animation-delay: 250ms;">
                         <h3 class="text-2xl font-bold text-red-400 mb-3">Disadvantages</h3>
-                        <ul class="list-disc list-inside text-gray-300 space-y-4 text-lg">
-                             <li><strong>Hard to Scale:</strong> If the shoe department gets busy, you must expand the entire store. <span class="text-sm text-gray-400">(Cannot scale one part independently).</span></li>
-                            <li><strong>Single Point of Failure:</strong> A power outage shuts down the whole store. <span class="text-sm text-gray-400">(A bug in one feature can crash the app).</span></li>
-                            <li><strong>Technology Lock-in:</strong> The whole store is built with brick; you can't build a new glass wing. <span class="text-sm text-gray-400">(Difficult to adopt new technologies).</span></li>
+                        <ul class="list-disc list-inside text-gray-300 space-y-3 text-lg">
+                             <li><strong>Complex Management:</strong> Coordinating 100 shops is harder than one big store.</li>
+                            <li><strong>Network Overhead:</strong> Customers have to walk between shops (services talk over a network).</li>
+                            <li><strong>Data Consistency:</strong> Getting total sales for the whole mall is complex.</li>
                         </ul>
                     </div>
                  </div>
             </div>
 
-            <!-- Slide 5: The Microservice -->
-            <div id="slide-5" class="slide p-8 sm:p-12 lg:p-16 justify-center">
-                <h2 class="text-3xl sm:text-4xl font-bold text-cyan-400 mb-6">Approach 2: Microservices</h2>
-                <p class="text-lg text-gray-300 mb-4">A microservice architecture is composed of many small, independent services. Each service handles one specific business function.</p>
-                 <div class="analogy-box p-4 rounded-r-lg mb-6">
-                    <p class="font-bold text-cyan-300">Real-World Analogy: The Modern Shopping Mall</p>
-                    <p class="text-gray-300">A collection of independent, specialized boutiques. Each shop runs its own business, has its own staff, and can be updated or renovated independently.</p>
-                </div>
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
-                    <div class="bg-gray-700 p-4 rounded-lg border-2 border-cyan-700">Product Service</div>
-                    <div class="bg-gray-700 p-4 rounded-lg border-2 border-cyan-700">Payment Service</div>
-                    <div class="bg-gray-700 p-4 rounded-lg border-2 border-cyan-700">Shipping Service</div>
-                    <div class="bg-gray-700 p-4 rounded-lg border-2 border-cyan-700">User Service</div>
-                </div>
-                 <p class="text-center mt-4 text-gray-400">These services talk to each other over a network (APIs).</p>
-            </div>
-
-            <!-- Slide 6: Microservice Pros & Cons -->
-            <div id="slide-6" class="slide p-8 sm:p-12 lg:p-16 justify-center">
-                 <h2 class="text-3xl sm:text-4xl font-bold text-cyan-400 mb-6">The Shopping Mall: Pros & Cons</h2>
-                 <div class="grid md:grid-cols-2 gap-8">
-                    <div>
-                        <h3 class="text-2xl font-bold text-green-400 mb-3">Advantages</h3>
-                        <ul class="list-disc list-inside text-gray-300 space-y-4 text-lg">
-                            <li><strong>Independent Scaling:</strong> If the shoe boutique is popular, you can expand just that shop. <span class="text-sm text-gray-400">(Scale services based on demand).</span></li>
-                            <li><strong>Resilience:</strong> If the bakery has a problem, the other shops stay open. <span class="text-sm text-gray-400">(Failure in one service doesn't crash others).</span></li>
-                            <li><strong>Technology Freedom:</strong> The bakery can use a brick oven while the electronics store uses modern tech. <span class="text-sm text-gray-400">(Use the best tool for each job).</span></li>
-                        </ul>
-                    </div>
-                    <div>
-                        <h3 class="text-2xl font-bold text-red-400 mb-3">Disadvantages</h3>
-                        <ul class="list-disc list-inside text-gray-300 space-y-4 text-lg">
-                             <li><strong>Complex to Manage:</strong> Coordinating 50 separate shops is harder than one big store. <span class="text-sm text-gray-400">(Higher operational overhead).</span></li>
-                            <li><strong>Network Communication:</strong> Shoppers have to walk between stores. <span class="text-sm text-gray-400">(Services must communicate over a network, which can be slow).</span></li>
-                            <li><strong>Distributed Data:</strong> Each shop has its own inventory list. <span class="text-sm text-gray-400">(Data consistency can be a challenge).</span></li>
-                        </ul>
-                    </div>
-                 </div>
-            </div>
-
-            <!-- Slide 7: Head-to-Head -->
-            <div id="slide-7" class="slide p-8 sm:p-12 lg:p-16 justify-center">
-                <h2 class="text-3xl sm:text-4xl font-bold text-cyan-400 mb-6">Head-to-Head Comparison</h2>
+            <!-- Slide 11: Head-to-Head -->
+            <div id="slide-11" class="slide">
+                <h2 class="text-3xl font-bold text-purple-400 mb-6">Model vs. Model: A Quick Look</h2>
                 <div class="overflow-x-auto">
-                    <table class="w-full text-left border-collapse">
+                    <table class="w-full text-left">
                         <thead>
                             <tr class="bg-gray-700">
-                                <th class="p-4">Feature</th>
-                                <th class="p-4">Monolith (Department Store)</th>
-                                <th class="p-4">Microservices (Shopping Mall)</th>
+                                <th class="p-3">Feature</th>
+                                <th class="p-3">Monolith (Bhat-Bhateni)</th>
+                                <th class="p-3">Microservices (Labim Mall)</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr class="border-b border-gray-600">
-                                <td class="p-4 font-bold">Development</td>
-                                <td class="p-4">Simple, single codebase</td>
-                                <td class="p-4">Complex, many codebases</td>
-                            </tr>
-                            <tr class="border-b border-gray-600">
-                                <td class="p-4 font-bold">Scalability</td>
-                                <td class="p-4">Scale the entire application</td>
-                                <td class="p-4">Scale individual services</td>
-                            </tr>
-                            <tr class="border-b border-gray-600">
-                                <td class="p-4 font-bold">Reliability</td>
-                                <td class="p-4">Single point of failure</td>
-                                <td class="p-4">Fault isolation, higher resilience</td>
-                            </tr>
-                             <tr class="border-b border-gray-600">
-                                <td class="p-4 font-bold">Technology</td>
-                                <td class="p-4">Single, unified tech stack</td>
-                                <td class="p-4">Polyglot (multiple stacks possible)</td>
-                            </tr>
-                             <tr>
-                                <td class="p-4 font-bold">Team Structure</td>
-                                <td class="p-4">One large team</td>
-                                <td class="p-4">Small, autonomous teams per service</td>
-                            </tr>
+                            <tr class="border-b border-gray-600 hover:bg-gray-700/50 transition-all"><td class="p-3 font-bold">Scaling</td><td class="p-3">All or nothing</td><td class="p-3">Independent & efficient</td></tr>
+                            <tr class="border-b border-gray-600 hover:bg-gray-700/50 transition-all"><td class="p-3 font-bold">Reliability</td><td class="p-3">A single bug can crash all</td><td class="p-3">Faults are isolated</td></tr>
+                            <tr class="border-b border-gray-600 hover:bg-gray-700/50 transition-all"><td class="p-3 font-bold">Updates</td><td class="p-3">Slow, high-risk</td><td class="p-3">Fast & independent</td></tr>
+                            <tr class="hover:bg-gray-700/50 transition-all"><td class="p-3 font-bold">Complexity</td><td class="p-3">Simple at start, complex later</td><td class="p-3">Complex at start, manageable later</td></tr>
                         </tbody>
                     </table>
                 </div>
             </div>
 
-            <!-- Slide 8: When to Choose? -->
-            <div id="slide-8" class="slide p-8 sm:p-12 lg:p-16 justify-center">
-                <h2 class="text-3xl sm:text-4xl font-bold text-cyan-400 mb-6">Which Architecture is Right for You?</h2>
-                <div class="grid md:grid-cols-2 gap-8">
-                    <div class="bg-gray-700 p-6 rounded-lg">
-                        <h3 class="text-xl font-bold mb-2 text-white">Choose a Monolith When...</h3>
-                        <ul class="list-disc list-inside space-y-2">
-                            <li>You're a small team just starting out.</li>
-                            <li>You're building a Minimum Viable Product (MVP).</li>
-                            <li>Your application domain is simple and not expected to grow massively.</li>
-                            <li>You need to launch quickly.</li>
-                        </ul>
+            <!-- Slide 12: Case Study -->
+            <div id="slide-12" class="slide">
+                <h2 class="text-3xl font-bold text-purple-400 mb-6">Case Study: A Nepali Digital Wallet</h2>
+                <p class="text-lg text-gray-300 mb-6">Let's think about an app like eSewa or Khalti.</p>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="bg-gray-700 p-4 rounded-lg">
+                        <h3 class="font-bold text-white mb-2">As a Monolith:</h3>
+                        <p>A bug in the "Movie Tickets" feature could potentially make "Bank Transfers" fail. During Tihar, to handle the rush of `bhai tika` payments, you must scale the entire app - including the movie ticket part!</p>
                     </div>
-                    <div class="bg-gray-700 p-6 rounded-lg">
-                        <h3 class="text-xl font-bold mb-2 text-white">Choose Microservices When...</h3>
-                        <ul class="list-disc list-inside space-y-2">
-                            <li>You have a large, complex application.</li>
-                            <li>You need to scale different parts of the app independently.</li>
-                            <li>You have multiple teams that need to work autonomously.</li>
-                            <li>You need high resilience and fault tolerance.</li>
-                        </ul>
+                    <div class="bg-gray-700 p-4 rounded-lg">
+                        <h3 class="font-bold text-white mb-2">As Microservices:</h3>
+                        <p>The `MovieTicketService` is separate. If it fails, bank transfers still work perfectly. For Tihar, you can pour all your resources into scaling only the `BankTransferService` and `WalletService`. It's cheaper and more reliable.</p>
                     </div>
                 </div>
-                <p class="mt-8 text-lg text-center text-cyan-300"><strong>Pro Tip:</strong> Many successful companies start with a monolith and gradually evolve to microservices as they grow. This is often called the "Strangler Fig" pattern.</p>
             </div>
 
-            <!-- Slide 9: Real World Giants -->
-            <div id="slide-9" class="slide p-8 sm:p-12 lg:p-16 justify-center">
-                <h2 class="text-3xl sm:text-4xl font-bold text-cyan-400 mb-6">Who Uses Microservices?</h2>
-                <p class="text-lg text-gray-300 mb-8">Many of the largest tech companies in the world rely on microservices to power their complex applications.</p>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div class="bg-gray-700 p-6 rounded-lg text-center">
-                        <h3 class="text-2xl font-bold text-red-500 mb-2">NETFLIX</h3>
-                        <p>Pioneered microservices to handle their massive video streaming infrastructure. Each function, from search to billing to streaming, is a separate service.</p>
+            <!-- Slide 13: The Evolution -->
+            <div id="slide-13" class="slide">
+                <h2 class="text-3xl font-bold text-purple-400 mb-6">The Journey of Pathao & Daraz</h2>
+                <p class="text-lg text-gray-300 mb-8">Most successful large-scale apps don't start with microservices. They evolve.</p>
+                <div class="space-y-4">
+                    <div class="flex items-center animated-item" style="animation-delay: 100ms;">
+                        <span class="text-3xl mr-4">1.</span>
+                        <div><strong class="text-white">Start as a Monolith:</strong> Pathao starts with just bike rides. It's one simple app. Easy to build and launch quickly.</div>
                     </div>
-                    <div class="bg-gray-700 p-6 rounded-lg text-center">
-                        <h3 class="text-2xl font-bold text-yellow-400 mb-2">Amazon</h3>
-                        <p>Amazon.com's retail website evolved from a monolith into thousands of microservices, allowing teams to innovate and deploy features independently.</p>
+                    <div class="flex items-center animated-item" style="animation-delay: 300ms;">
+                        <span class="text-3xl mr-4">2.</span>
+                        <div><strong class="text-white">Feel the Pain:</strong> They add cars, food delivery, and groceries. The app becomes huge and slow. A bug in "Food" affects "Rides".</div>
                     </div>
-                    <div class="bg-gray-700 p-6 rounded-lg text-center">
-                        <h3 class="text-2xl font-bold text-white mb-2">Uber</h3>
-                        <p>Manages the complexity of ride-hailing, food delivery, and logistics with a microservice architecture for each business domain.</p>
+                    <div class="flex items-center animated-item" style="animation-delay: 500ms;">
+                        <span class="text-3xl mr-4">3.</span>
+                        <div><strong class="text-white">Evolve to Microservices:</strong> They slowly break pieces off. A `RideService`, a `FoodService`, a `PaymentService`. Now, different teams can work on each part independently and innovate faster.</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 14: When to Choose? -->
+            <div id="slide-14" class="slide">
+                <h2 class="text-3xl font-bold text-purple-400 mb-6">So, Which Blueprint to Use?</h2>
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div class="bg-gray-700 p-6 rounded-lg hover-lift transition-all">
+                        <h3 class="text-xl font-bold mb-2 text-white">Choose Monolith (Bhat-Bhateni) When...</h3>
+                        <ul class="list-disc list-inside space-y-2">
+                            <li>You have a small team or are just starting.</li>
+                            <li>You are building a prototype (MVP).</li>
+                            <li>Your idea is simple.</li>
+                        </ul>
+                    </div>
+                    <div class="bg-gray-700 p-6 rounded-lg hover-lift transition-all">
+                        <h3 class="text-xl font-bold mb-2 text-white">Choose Microservices (Labim Mall) When...</h3>
+                        <ul class="list-disc list-inside space-y-2">
+                            <li>Your app is large and complex (like Daraz).</li>
+                            <li>You need extreme reliability and scalability.</li>
+                            <li>You have multiple large teams.</li>
+                        </ul>
                     </div>
                 </div>
             </div>
             
-            <!-- Slide 10: Conclusion -->
-            <div id="slide-10" class="slide p-8 sm:p-12 lg:p-16 items-center justify-center text-center bg-gradient-to-br from-cyan-900 to-gray-800">
-                <h2 class="text-4xl sm:text-5xl font-bold text-white">Key Takeaways</h2>
-                <div class="text-lg sm:text-xl text-cyan-300 max-w-3xl mt-6 space-y-4">
-                    <p><strong>Monoliths</strong> are great for speed and simplicity at the start.</p>
-                    <p><strong>Microservices</strong> offer scalability and flexibility for large, complex systems.</p>
-                    <p>The choice is not about which is "better," but which is <span class="font-bold text-white">right for your specific context, team, and goals.</span></p>
+            <!-- Slide 15: Conclusion -->
+            <div id="slide-15" class="slide items-center text-center bg-gradient-to-br from-purple-900 to-gray-800">
+                <h2 class="text-4xl sm:text-5xl font-bold text-white" style="font-family: 'Playfair Display', serif;">Conclusion</h2>
+                <div class="text-lg sm:text-xl text-purple-300 max-w-3xl mt-6 space-y-4">
+                    <p>There is no single "best" answer. The right architecture depends on your specific needs.</p>
+                    <p>Starting with a simple <strong class="text-white">Monolith</strong> and evolving towards <strong class="text-white">Microservices</strong> as you grow is a proven and powerful strategy.</p>
                 </div>
                 <h3 class="mt-12 text-3xl sm:text-4xl font-bold text-yellow-300">Thank You</h3>
-                <p class="mt-4 text-lg sm:text-xl text-gray-400">For more resources, visit my website or follow me on GitHub.</p>
-                <div class="mt-8">
-                    <a href="https://www.aadarshajha.com.np/" class="text-cyan-400 hover:underline">Visit my website</a>
-                    <a href="https://github.com/cypher-aadarsha" class="text-cyan-400 hover:underline">Follow me on GitHub</a>
-                </div>
             </div>
+
         </div>
 
         <!-- Navigation -->
         <div class="w-full max-w-lg mt-6 flex items-center justify-between">
-            <button id="prev-btn" class="bg-cyan-600 hover:bg-cyan-500 text-white font-bold py-2 px-4 rounded-lg shadow-md disabled:bg-gray-600 disabled:cursor-not-allowed">
-                Previous
-            </button>
-            <div id="slide-counter" class="text-gray-400 text-sm">Slide 1 / 10</div>
-            <button id="fullscreen-btn" class="bg-cyan-600 hover:bg-cyan-500 text-white p-2 rounded-lg shadow-md">
+            <button id="prev-btn" class="bg-purple-600 hover:bg-purple-500 text-white font-bold py-2 px-4 rounded-lg shadow-md disabled:bg-gray-600 disabled:cursor-not-allowed transition-all">Previous</button>
+            <div id="slide-counter" class="text-gray-400 text-sm">Slide 1 / 15</div>
+            <button id="fullscreen-btn" class="bg-purple-600 hover:bg-purple-500 text-white p-2 rounded-lg shadow-md transition-all">
                 <svg id="fullscreen-enter-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>
                 <svg id="fullscreen-exit-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="hidden"><path d="m15 19-6-6 6-6M5 19h3m11 0h3a2 2 0 0 0 2-2v-3M5 5h3m11 0h3a2 2 0 0 1 2 2v3M3 19v-3a2 2 0 0 1 2-2h3"/></svg>
             </button>
-            <button id="next-btn" class="bg-cyan-600 hover:bg-cyan-500 text-white font-bold py-2 px-4 rounded-lg shadow-md disabled:bg-gray-600 disabled:cursor-not-allowed">
-                Next
-            </button>
+            <button id="next-btn" class="bg-purple-600 hover:bg-purple-500 text-white font-bold py-2 px-4 rounded-lg shadow-md disabled:bg-gray-600 disabled:cursor-not-allowed transition-all">Next</button>
         </div>
+        
+        <footer id="footer">
+            <p class="developer-name">Designed & Developed by Aadarsha Jha</p>
+            <p class="copyright">&copy; 2025. All Rights Reserved.</p>
+        </footer>
     </div>
-   <!-- Enhanced Footer with Credits -->
-    <footer class="w-full max-w-2xl mt-8 text-center">
-        <!-- Main Footer Content -->
-        <div class="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700/50 shadow-lg">
-            <div class="space-y-4">
-                <!-- Creator Info -->
-                <div>
-                    <h3 class="text-lg font-semibold text-cyan-400 mb-2">Created by Aadarsha Jha</h3>
-                    <p class="text-gray-400 text-sm">Inspired by real-world analogies to explain software architecture concepts</p>
-                </div>                
-                <!-- Social Links -->
-                <div class="flex justify-center space-x-6">
-                    <a href="https://www.aadarshajha.com.np/" 
-                       class="text-cyan-400 hover:text-cyan-300 transition-colors duration-200 text-sm font-medium">
-                        🌐 Website
-                    </a>
-                    <a href="https://github.com/cypher-aadarsha" 
-                       class="text-cyan-400 hover:text-cyan-300 transition-colors duration-200 text-sm font-medium">
-                        💻 GitHub
-                    </a>
-                </div>
-                
-                <!-- Separator Line -->
-                <div class="border-t border-gray-600/50 pt-4">
-                    <p class="text-gray-500 text-xs">
-                        Designed & Developed by <span class="text-cyan-400 font-medium">Aadarsha Jha</span>
-                    </p>
-                    <p class="text-gray-500 text-xs mt-1">
-                        &copy; 2025. All Rights Reserved.
-                    </p>
-                </div>
-            </div>
-        </div>
-    </footer>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
@@ -363,12 +357,8 @@
             const totalSlides = slides.length;
 
             function showSlide(index) {
-                slides.forEach((slide) => {
-                    slide.classList.remove('active');
-                });
-                if (slides[index]) {
-                    slides[index].classList.add('active');
-                }
+                slides.forEach((slide) => slide.classList.remove('active'));
+                if (slides[index]) slides[index].classList.add('active');
                 updateControls();
             }
 
@@ -380,13 +370,9 @@
 
             function toggleFullScreen() {
                 if (!document.fullscreenElement) {
-                    document.documentElement.requestFullscreen().catch(err => {
-                        console.error(`Error attempting to enable full-screen mode: ${err.message} (${err.name})`);
-                    });
+                    document.documentElement.requestFullscreen().catch(err => console.error(`Fullscreen error: ${err.message}`));
                 } else {
-                    if (document.exitFullscreen) {
-                        document.exitFullscreen();
-                    }
+                    if (document.exitFullscreen) document.exitFullscreen();
                 }
             }
             
@@ -400,37 +386,17 @@
                 }
             }
 
-            // Event Listeners
-            nextBtn.addEventListener('click', () => {
-                if (currentSlide < totalSlides - 1) {
-                    currentSlide++;
-                    showSlide(currentSlide);
-                }
-            });
-
-            prevBtn.addEventListener('click', () => {
-                if (currentSlide > 0) {
-                    currentSlide--;
-                    showSlide(currentSlide);
-                }
-            });
-
+            nextBtn.addEventListener('click', () => { if (currentSlide < totalSlides - 1) { currentSlide++; showSlide(currentSlide); } });
+            prevBtn.addEventListener('click', () => { if (currentSlide > 0) { currentSlide--; showSlide(currentSlide); } });
             fullscreenBtn.addEventListener('click', toggleFullScreen);
             document.addEventListener('fullscreenchange', updateFullscreenIcons);
 
-            // Keyboard navigation
             document.addEventListener('keydown', (e) => {
-                if (e.key === 'ArrowRight') {
-                    nextBtn.click();
-                } else if (e.key === 'ArrowLeft') {
-                    prevBtn.click();
-                } else if (e.key === 'f' || e.key === 'F') {
-                    e.preventDefault();
-                    toggleFullScreen();
-                }
+                if (e.key === 'ArrowRight' && !nextBtn.disabled) nextBtn.click();
+                else if (e.key === 'ArrowLeft' && !prevBtn.disabled) prevBtn.click();
+                else if (e.key.toLowerCase() === 'f') { e.preventDefault(); toggleFullScreen(); }
             });
 
-            // Initialize
             showSlide(currentSlide);
             updateFullscreenIcons();
         });
@@ -438,3 +404,10 @@
 
 </body>
 </html>
+
+<!-- This HTML document provides a comprehensive presentation on the topic of Monolith vs. Microservices, tailored for a Nepali audience. It uses Tailwind CSS for styling and includes interactive elements for navigation and fullscreen mode. The content is structured into slides, each focusing on different aspects of the topic, with analogies relevant to the local context. -->
+<!-- The presentation is designed to be visually appealing and easy to follow, with a focus on practical examples and clear explanations. The footer includes developer credits and copyright information. -->
+<!-- The JavaScript handles slide navigation, fullscreen toggling, and keyboard shortcuts for an enhanced user experience. The code is structured to be responsive and accessible, ensuring it works well on various devices. -->
+<!-- The use of Nepali cultural references, such as Bhat-Bhateni and Labim  Mall, makes the content relatable and engaging for the target audience. -->
+<!-- The presentation is suitable for educational purposes, tech meetups, or online learning platforms, providing a solid foundation for understanding software architecture choices in the context of Nepal's growing digital landscape. -->
+<!-- The code is well-commented and organized, making it easy for developers to understand and modify as needed. The use of modern web technologies ensures compatibility with current browsers and devices, enhancing the overall user experience. -->
