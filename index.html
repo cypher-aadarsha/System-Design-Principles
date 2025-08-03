@@ -1,413 +1,646 @@
+<!--Author: Nikesh Shah & Niuj Poudel-->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Monolith vs. Microservices: A Nepali Perspective</title>
+    <title>Operating Systems Presentation</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <!-- JS Libraries for PPTX and DOCX generation -->
+    <script src="https://cdn.jsdelivr.net/npm/pptxgenjs@3.12.0/dist/pptxgen.bundle.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/docx@8.5.0/build/index.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/file-saver@2.0.5/dist/FileSaver.min.js"></script>
     <style>
-        html, body {
-            margin: 0;
-            padding: 0;
-            width: 100%;
-            height: 100%;
-        }
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #111827; /* bg-gray-900 */
-            color: #d1d5db; /* text-gray-300 */
-        }
-        #main-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            padding: 1rem;
-        }
-        .slide {
-            display: none;
-            flex-grow: 1;
-            overflow-y: auto;
-            padding: 2rem 2.5rem;
-        }
-        .slide.active {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
+            background-color: #f0f4f8;
+            color: #1a202c;
         }
         .slide-container {
             width: 100%;
-            max-width: 1000px;
-            aspect-ratio: 16 / 9;
-            background-color: #1f2937; /* bg-gray-800 */
-            border-radius: 1rem;
-            box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
-            border: 1px solid #4b5563; /* border-gray-600 */
+            height: 100vh;
             display: flex;
             flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            scroll-snap-align: start;
+            position: relative;
+            padding: 2rem;
+            box-sizing: border-box;
+        }
+        .slide {
+            background-color: white;
+            border-radius: 1.5rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            width: 95%;
+            max-width: 1200px;
+            height: 90vh;
+            max-height: 700px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 3rem 4rem;
+            position: relative;
             overflow: hidden;
-            transition: all 0.3s ease-in-out;
+            transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
+            opacity: 0;
+            transform: scale(0.95);
         }
-        
-        /* Fullscreen styles */
-        body:fullscreen .slide-container {
-            max-width: 100%;
-            height: 100%;
-            border-radius: 0;
+        .slide.active {
+            opacity: 1;
+            transform: scale(1);
+        }
+        .slide-number {
+            position: absolute;
+            bottom: 1.5rem;
+            right: 2rem;
+            font-size: 0.875rem;
+            color: #a0aec0;
+        }
+        .slide-footer {
+            position: absolute;
+            bottom: 1.5rem;
+            left: 2rem;
+            font-size: 0.875rem;
+            color: #a0aec0;
+        }
+        .nav-buttons {
+            position: fixed;
+            bottom: 3vh;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 1rem;
+            z-index: 100;
+        }
+        .nav-button {
+            background-color: #2d3748;
+            color: white;
             border: none;
-            aspect-ratio: auto;
+            border-radius: 9999px;
+            width: 3rem;
+            height: 3rem;
+            font-size: 1.25rem;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
         }
-        body:fullscreen #main-container { padding: 0; height: 100%; width: 100%; }
-        body:fullscreen #footer { display: none; }
-        body:fullscreen .slide { padding: 2rem 4rem; }
-
-        /* Animations & Dynamic Elements */
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-        .active { animation: fadeIn 0.6s ease-in-out; }
-        .animated-item { animation: slideUp 0.7s ease-out both; }
-        .hover-lift:hover { transform: translateY(-5px); box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.2), 0 4px 6px -4px rgb(0 0 0 / 0.1); }
-        .transition-all { transition: all 0.3s ease-in-out; }
-
-        /* Footer Styles */
-        #footer { margin-top: 1.5rem; padding: 1rem; text-align: center; width: 100%; max-width: 1000px; }
-        #footer .developer-name { font-family: 'Playfair Display', serif; font-size: 1.25rem; color: #e5e7eb; margin-bottom: 0.25rem; }
-        #footer .copyright { font-size: 0.875rem; color: #6b7280; }
+        .nav-button:hover {
+            background-color: #1a202c;
+            transform: translateY(-2px);
+        }
+        .download-menu {
+            position: fixed;
+            bottom: 3vh;
+            right: 2rem;
+            z-index: 100;
+        }
+        .download-options {
+            display: none;
+            position: absolute;
+            bottom: 100%;
+            right: 0;
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
+            margin-bottom: 0.5rem;
+            overflow: hidden;
+            width: 180px;
+        }
+        .download-menu:hover .download-options {
+            display: block;
+        }
+        .download-option {
+            padding: 0.75rem 1rem;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            color: #2d3748;
+            font-size: 0.875rem;
+        }
+        .download-option:hover {
+            background-color: #edf2f7;
+        }
+        .slide-content { width: 100%; height: 100%; }
+        h1 { font-size: 3.75rem; font-weight: 900; color: #1a202c; text-align: center; margin-bottom: 1rem; }
+        h2 { font-size: 2.25rem; font-weight: 700; color: #2d3748; text-align: center; margin-bottom: 2.5rem; position: relative; padding-bottom: 0.5rem; }
+        h2::after { content: ''; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 80px; height: 4px; background-color: #4299e1; border-radius: 2px; }
+        p, li { font-size: 1.125rem; line-height: 1.75; color: #4a5568; }
+        ul { list-style-type: none; padding-left: 0; }
+        li { padding-left: 2rem; position: relative; margin-bottom: 1rem; }
+        li::before { content: '✓'; position: absolute; left: 0; color: #4299e1; font-weight: bold; }
+        .grid-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; width: 100%; }
+        .card { background-color: #f7fafc; border: 1px solid #e2e8f0; border-radius: 0.75rem; padding: 1.5rem; }
+        .card h3 { font-size: 1.25rem; font-weight: 600; color: #2d3748; margin-bottom: 0.5rem; }
+        .toc-item { font-size: 1.5rem; color: #2d3748; margin-bottom: 1.25rem; transition: color 0.3s; cursor: pointer; }
+        .toc-item:hover { color: #4299e1; }
+        .toc-number { font-weight: 700; color: #4299e1; margin-right: 1rem; }
     </style>
 </head>
 <body>
-
-    <div id="main-container">
-        <div id="presentation-container" class="slide-container">
-            
-            <!-- Slide 1: Title -->
-            <div id="slide-1" class="slide active items-center text-center bg-gradient-to-br from-purple-900 to-gray-800">
-                <h1 class="text-4xl sm:text-5xl lg:text-7xl font-bold text-white leading-tight" style="font-family: 'Playfair Display', serif;">Monolith vs. Microservices</h1>
-                <p class="mt-4 text-lg sm:text-xl lg:text-2xl text-purple-300">A Nepali Perspective on Software Architecture</p>
-            </div>
-
-            <!-- Slide 2: Setting the Scene -->
-            <div id="slide-2" class="slide">
-                <h2 class="text-3xl font-bold text-purple-400 mb-6 animated-item">The Digital Boom in Nepal</h2>
-                <p class="text-lg text-gray-300 mb-8 animated-item" style="animation-delay: 150ms;">Nepal's digital economy is growing rapidly. From ordering food to paying bills, software is everywhere. But how should we build these complex apps?</p>
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-                    <div class="bg-gray-700 p-4 rounded-lg animated-item hover-lift transition-all" style="animation-delay: 300ms;"><span class="text-3xl">🛍️</span><p class="mt-2 font-semibold">Daraz</p></div>
-                    <div class="bg-gray-700 p-4 rounded-lg animated-item hover-lift transition-all" style="animation-delay: 400ms;"><span class="text-3xl">🛵</span><p class="mt-2 font-semibold">Pathao</p></div>
-                    <div class="bg-gray-700 p-4 rounded-lg animated-item hover-lift transition-all" style="animation-delay: 500ms;"><span class="text-3xl">💸</span><p class="mt-2 font-semibold">eSewa/Khalti</p></div>
-                    <div class="bg-gray-700 p-4 rounded-lg animated-item hover-lift transition-all" style="animation-delay: 600ms;"><span class="text-3xl">🍔</span><p class="mt-2 font-semibold">Foodmandu</p></div>
-                </div>
-            </div>
-            
-            <!-- Slide 3: The Core Challenge -->
-            <div id="slide-3" class="slide">
-                <h2 class="text-3xl font-bold text-purple-400 mb-6 animated-item">The Core Challenge: How to Build?</h2>
-                <p class="text-lg text-gray-300 mb-8 animated-item" style="animation-delay: 150ms;">Imagine we want to build a new "Super App". We have two main blueprints we can follow. Let's explore them using analogies we all know.</p>
-                <div class="grid md:grid-cols-2 gap-8 text-center">
-                    <div class="animated-item" style="animation-delay: 300ms;">
-                        <h3 class="text-2xl font-bold text-white mb-3">Approach 1: The Monolith</h3>
-                        <p class="text-lg text-purple-300">Everything under one giant roof.</p>
-                    </div>
-                    <div class="animated-item" style="animation-delay: 450ms;">
-                        <h3 class="text-2xl font-bold text-white mb-3">Approach 2: Microservices</h3>
-                        <p class="text-lg text-purple-300">A collection of specialized shops.</p>
+    <div id="presentation-container">
+        <!-- Slides 1-14 (HTML content remains the same) -->
+        <!-- Slide 1: Title -->
+        <div class="slide-container">
+            <div id="slide-1" class="slide">
+                <div class="slide-content text-center flex flex-col justify-center items-center">
+                    <h1 class="bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-teal-400">Operating Systems</h1>
+                    <p class="text-2xl text-gray-600 mt-4">An In-depth Overview</p>
+                    <div class="mt-20">
+                        <p class="text-lg font-medium text-gray-700">Designed and Developed by:</p>
+                        <p class="text-xl font-semibold text-gray-800">Nikesh Shah & Niuj Poudel</p>
                     </div>
                 </div>
+                <div class="slide-number">Slide 1 of 14</div>
             </div>
-
-            <!-- Slide 4: The Monolith Analogy -->
-            <div id="slide-4" class="slide">
-                <h2 class="text-3xl font-bold text-purple-400 mb-4 animated-item">The Monolith: The Bhat-Bhateni Model</h2>
-                <p class="text-lg text-gray-300 mb-6 animated-item" style="animation-delay: 150ms;">A monolith is a single, unified application. All its parts are interconnected and run as one unit.</p>
-                <div class="bg-purple-900/30 border-l-4 border-purple-400 p-4 rounded-r-lg mb-6 animated-item" style="animation-delay: 300ms;">
-                    <p class="font-bold text-purple-300">Analogy: A Bhat-Bhateni Superstore</p>
-                    <p class="text-gray-300">One enormous building. Groceries, electronics, clothing, and the food court are all departments sharing the same foundation, security, and power supply. They are all part of "Bhat-Bhateni".</p>
-                </div>
-            </div>
-
-            <!-- Slide 5: Anatomy of a Monolith -->
-            <div id="slide-5" class="slide items-center">
-                <div class="w-full max-w-lg bg-gray-700 p-6 rounded-lg flex flex-col items-center animated-item">
-                    <h3 class="font-bold text-xl mb-4 text-white">Monolithic "SuperApp"</h3>
-                    <div class="w-full bg-gray-600 p-4 rounded-lg border-2 border-gray-500 flex flex-col items-center">
-                        <div class="w-full grid grid-cols-2 gap-2 text-center text-sm">
-                           <div class="bg-purple-800 p-3 rounded">User Accounts</div>
-                           <div class="bg-purple-800 p-3 rounded">E-commerce</div>
-                           <div class="bg-purple-800 p-3 rounded">Ride-Sharing</div>
-                           <div class="bg-purple-800 p-3 rounded">Bill Payments</div>
-                        </div>
-                        <div class="w-full bg-gray-500 p-3 mt-2 rounded font-semibold">Shared Database</div>
-                    </div>
-                    <p class="text-sm mt-4 text-gray-400">Everything is tightly coupled in one large application.</p>
-                </div>
-            </div>
-
-            <!-- Slide 6: Monolith Pros & Cons -->
-            <div id="slide-6" class="slide">
-                 <h2 class="text-3xl font-bold text-purple-400 mb-6">The Bhat-Bhateni Model: Pros & Cons</h2>
-                 <div class="grid md:grid-cols-2 gap-8">
-                    <div class="animated-item" style="animation-delay: 100ms;">
-                        <h3 class="text-2xl font-bold text-green-400 mb-3">Advantages</h3>
-                        <ul class="list-disc list-inside text-gray-300 space-y-3 text-lg">
-                            <li><strong>Simple Start:</strong> Easy to design and build the first branch.</li>
-                            <li><strong>Easy Testing:</strong> Just walk through the whole store to check everything.</li>
-                            <li><strong>Simple Deployment:</strong> Just "open the doors" of the one building.</li>
-                        </ul>
-                    </div>
-                    <div class="animated-item" style="animation-delay: 250ms;">
-                        <h3 class="text-2xl font-bold text-red-400 mb-3">Disadvantages</h3>
-                        <ul class="list-disc list-inside text-gray-300 space-y-3 text-lg">
-                            <li><strong>Scaling Issues:</strong> If the grocery section is packed for Dashain, you can't just expand it. You have to expand the whole building.</li>
-                            <li><strong>Single Point of Failure:</strong> A generator problem (बत्ती गयो!) shuts down the entire store.</li>
-                            <li><strong>Slow to Update:</strong> Renovating the clothing section requires careful planning that might disrupt the whole store.</li>
-                        </ul>
-                    </div>
-                 </div>
-            </div>
-            
-            <!-- Slide 7: Microservices Analogy -->
-            <div id="slide-7" class="slide">
-                <h2 class="text-3xl font-bold text-purple-400 mb-4 animated-item">Microservices: The Labim Mall Model</h2>
-                <p class="text-lg text-gray-300 mb-6 animated-item" style="animation-delay: 150ms;">A microservice architecture breaks an application into many small, independent services.</p>
-                <div class="bg-purple-900/30 border-l-4 border-purple-400 p-4 rounded-r-lg mb-6 animated-item" style="animation-delay: 300ms;">
-                    <p class="font-bold text-purple-300">Analogy: A Modern Shopping Mall (like Labim or Civil Mall)</p>
-                    <p class="text-gray-300">A collection of independent shops. Levis, QFX Cinemas, and the Food Court are all separate businesses. They can redecorate, hire staff, or even close without affecting the other shops.</p>
-                </div>
-            </div>
-            
-            <!-- Slide 8: Anatomy of Microservices -->
-            <div id="slide-8" class="slide items-center">
-                 <div class="w-full max-w-2xl text-center animated-item">
-                    <h3 class="font-bold text-xl mb-4 text-white">Microservice "SuperApp"</h3>
-                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                        <div class="bg-gray-700 p-4 rounded-lg border-2 border-purple-600 hover-lift transition-all">UserService.api</div>
-                        <div class="bg-gray-700 p-4 rounded-lg border-2 border-purple-600 hover-lift transition-all">ShopService.api</div>
-                        <div class="bg-gray-700 p-4 rounded-lg border-2 border-purple-600 hover-lift transition-all">RideService.api</div>
-                        <div class="bg-gray-700 p-4 rounded-lg border-2 border-purple-600 hover-lift transition-all">PaymentService.api</div>
-                    </div>
-                    <p class="text-sm mt-4 text-gray-400">Each service is an independent application that communicates with others.</p>
-                 </div>
-            </div>
-
-            <!-- NEW Slide 9: How Microservices Talk -->
-            <div id="slide-9" class="slide">
-                <h2 class="text-3xl font-bold text-purple-400 mb-6">How Do The Shops Talk?</h2>
-                <p class="text-lg text-gray-300 mb-6">If the shops are separate, how do they work together? They need to communicate.</p>
-                <div class="grid md:grid-cols-2 gap-6">
-                    <div class="bg-gray-700 p-4 rounded-lg animated-item" style="animation-delay: 100ms;">
-                        <h3 class="font-bold text-white mb-2 flex items-center"><span class="text-2xl mr-3">📞</span> Direct Call (API)</h3>
-                        <p>One shop calls another directly for an answer.</p>
-                        <p class="text-sm text-purple-300 mt-2"><strong>Analogy:</strong> QFX calls the pizza place: "Do you have a large pizza?" and waits for a "Yes/No". It's fast, but QFX is stuck waiting for the answer.</p>
-                    </div>
-                    <div class="bg-gray-700 p-4 rounded-lg animated-item" style="animation-delay: 250ms;">
-                        <h3 class="font-bold text-white mb-2 flex items-center"><span class="text-2xl mr-3">📬</span> Message Board (Queue)</h3>
-                        <p>One shop leaves a message for another to see later.</p>
-                        <p class="text-sm text-purple-300 mt-2"><strong>Analogy:</strong> Daraz posts an order on a notice board. A delivery partner (like a Pathao rider) sees the notice, picks up the package, and delivers it. Daraz doesn't wait; it can process the next order immediately.</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Slide 10: Microservices Pros & Cons -->
-            <div id="slide-10" class="slide">
-                 <h2 class="text-3xl font-bold text-purple-400 mb-6">The Labim Mall Model: Pros & Cons</h2>
-                 <div class="grid md:grid-cols-2 gap-8">
-                    <div class="animated-item" style="animation-delay: 100ms;">
-                        <h3 class="text-2xl font-bold text-green-400 mb-3">Advantages</h3>
-                        <ul class="list-disc list-inside text-gray-300 space-y-3 text-lg">
-                            <li><strong>Independent Scaling:</strong> If QFX is sold out, only that service needs more resources.</li>
-                            <li><strong>Resilience:</strong> If the pizza place closes, you can still go shopping or watch a movie.</li>
-                            <li><strong>Tech Freedom:</strong> The cinema uses projectors; a store uses cash registers. Best tool for each job.</li>
-                        </ul>
-                    </div>
-                    <div class="animated-item" style="animation-delay: 250ms;">
-                        <h3 class="text-2xl font-bold text-red-400 mb-3">Disadvantages</h3>
-                        <ul class="list-disc list-inside text-gray-300 space-y-3 text-lg">
-                             <li><strong>Complex Management:</strong> Coordinating 100 shops is harder than one big store.</li>
-                            <li><strong>Network Overhead:</strong> Customers have to walk between shops (services talk over a network).</li>
-                            <li><strong>Data Consistency:</strong> Getting total sales for the whole mall is complex.</li>
-                        </ul>
-                    </div>
-                 </div>
-            </div>
-
-            <!-- Slide 11: Head-to-Head -->
-            <div id="slide-11" class="slide">
-                <h2 class="text-3xl font-bold text-purple-400 mb-6">Model vs. Model: A Quick Look</h2>
-                <div class="overflow-x-auto">
-                    <table class="w-full text-left">
-                        <thead>
-                            <tr class="bg-gray-700">
-                                <th class="p-3">Feature</th>
-                                <th class="p-3">Monolith (Bhat-Bhateni)</th>
-                                <th class="p-3">Microservices (Labim Mall)</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr class="border-b border-gray-600 hover:bg-gray-700/50 transition-all"><td class="p-3 font-bold">Scaling</td><td class="p-3">All or nothing</td><td class="p-3">Independent & efficient</td></tr>
-                            <tr class="border-b border-gray-600 hover:bg-gray-700/50 transition-all"><td class="p-3 font-bold">Reliability</td><td class="p-3">A single bug can crash all</td><td class="p-3">Faults are isolated</td></tr>
-                            <tr class="border-b border-gray-600 hover:bg-gray-700/50 transition-all"><td class="p-3 font-bold">Updates</td><td class="p-3">Slow, high-risk</td><td class="p-3">Fast & independent</td></tr>
-                            <tr class="hover:bg-gray-700/50 transition-all"><td class="p-3 font-bold">Complexity</td><td class="p-3">Simple at start, complex later</td><td class="p-3">Complex at start, manageable later</td></tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <!-- Slide 12: Case Study -->
-            <div id="slide-12" class="slide">
-                <h2 class="text-3xl font-bold text-purple-400 mb-6">Case Study: A Nepali Digital Wallet</h2>
-                <p class="text-lg text-gray-300 mb-6">Let's think about an app like eSewa or Khalti.</p>
-                <div class="grid md:grid-cols-2 gap-6">
-                    <div class="bg-gray-700 p-4 rounded-lg">
-                        <h3 class="font-bold text-white mb-2">As a Monolith:</h3>
-                        <p>A bug in the "Movie Tickets" feature could potentially make "Bank Transfers" fail. During Tihar, to handle the rush of `bhai tika` payments, you must scale the entire app - including the movie ticket part!</p>
-                    </div>
-                    <div class="bg-gray-700 p-4 rounded-lg">
-                        <h3 class="font-bold text-white mb-2">As Microservices:</h3>
-                        <p>The `MovieTicketService` is separate. If it fails, bank transfers still work perfectly. For Tihar, you can pour all your resources into scaling only the `BankTransferService` and `WalletService`. It's cheaper and more reliable.</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Slide 13: The Evolution -->
-            <div id="slide-13" class="slide">
-                <h2 class="text-3xl font-bold text-purple-400 mb-6">The Journey of Pathao & Daraz</h2>
-                <p class="text-lg text-gray-300 mb-8">Most successful large-scale apps don't start with microservices. They evolve.</p>
-                <div class="space-y-4">
-                    <div class="flex items-center animated-item" style="animation-delay: 100ms;">
-                        <span class="text-3xl mr-4">1.</span>
-                        <div><strong class="text-white">Start as a Monolith:</strong> Pathao starts with just bike rides. It's one simple app. Easy to build and launch quickly.</div>
-                    </div>
-                    <div class="flex items-center animated-item" style="animation-delay: 300ms;">
-                        <span class="text-3xl mr-4">2.</span>
-                        <div><strong class="text-white">Feel the Pain:</strong> They add cars, food delivery, and groceries. The app becomes huge and slow. A bug in "Food" affects "Rides".</div>
-                    </div>
-                    <div class="flex items-center animated-item" style="animation-delay: 500ms;">
-                        <span class="text-3xl mr-4">3.</span>
-                        <div><strong class="text-white">Evolve to Microservices:</strong> They slowly break pieces off. A `RideService`, a `FoodService`, a `PaymentService`. Now, different teams can work on each part independently and innovate faster.</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Slide 14: When to Choose? -->
-            <div id="slide-14" class="slide">
-                <h2 class="text-3xl font-bold text-purple-400 mb-6">So, Which Blueprint to Use?</h2>
-                <div class="grid md:grid-cols-2 gap-8">
-                    <div class="bg-gray-700 p-6 rounded-lg hover-lift transition-all">
-                        <h3 class="text-xl font-bold mb-2 text-white">Choose Monolith (Bhat-Bhateni) When...</h3>
-                        <ul class="list-disc list-inside space-y-2">
-                            <li>You have a small team or are just starting.</li>
-                            <li>You are building a prototype (MVP).</li>
-                            <li>Your idea is simple.</li>
-                        </ul>
-                    </div>
-                    <div class="bg-gray-700 p-6 rounded-lg hover-lift transition-all">
-                        <h3 class="text-xl font-bold mb-2 text-white">Choose Microservices (Labim Mall) When...</h3>
-                        <ul class="list-disc list-inside space-y-2">
-                            <li>Your app is large and complex (like Daraz).</li>
-                            <li>You need extreme reliability and scalability.</li>
-                            <li>You have multiple large teams.</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Slide 15: Conclusion -->
-            <div id="slide-15" class="slide items-center text-center bg-gradient-to-br from-purple-900 to-gray-800">
-                <h2 class="text-4xl sm:text-5xl font-bold text-white" style="font-family: 'Playfair Display', serif;">Conclusion</h2>
-                <div class="text-lg sm:text-xl text-purple-300 max-w-3xl mt-6 space-y-4">
-                    <p>There is no single "best" answer. The right architecture depends on your specific needs.</p>
-                    <p>Starting with a simple <strong class="text-white">Monolith</strong> and evolving towards <strong class="text-white">Microservices</strong> as you grow is a proven and powerful strategy.</p>
-                </div>
-                <h3 class="mt-12 text-3xl sm:text-4xl font-bold text-yellow-300">Thank You</h3>
-            </div>
-
         </div>
 
-        <!-- Navigation -->
-        <div class="w-full max-w-lg mt-6 flex items-center justify-between">
-            <button id="prev-btn" class="bg-purple-600 hover:bg-purple-500 text-white font-bold py-2 px-4 rounded-lg shadow-md disabled:bg-gray-600 disabled:cursor-not-allowed transition-all">Previous</button>
-            <div id="slide-counter" class="text-gray-400 text-sm">Slide 1 / 15</div>
-            <button id="fullscreen-btn" class="bg-purple-600 hover:bg-purple-500 text-white p-2 rounded-lg shadow-md transition-all">
-                <svg id="fullscreen-enter-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>
-                <svg id="fullscreen-exit-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="hidden"><path d="m15 19-6-6 6-6M5 19h3m11 0h3a2 2 0 0 0 2-2v-3M5 5h3m11 0h3a2 2 0 0 1 2 2v3M3 19v-3a2 2 0 0 1 2-2h3"/></svg>
-            </button>
-            <button id="next-btn" class="bg-purple-600 hover:bg-purple-500 text-white font-bold py-2 px-4 rounded-lg shadow-md disabled:bg-gray-600 disabled:cursor-not-allowed transition-all">Next</button>
+        <!-- Slide 2: Table of Contents -->
+        <div class="slide-container">
+            <div id="slide-2" class="slide">
+                <div class="slide-content">
+                    <h2>Table of Contents</h2>
+                    <ul class="mt-8">
+                        <li class="toc-item" onclick="goToSlide(3)"><span class="toc-number">1.</span> Definition of an Operating System</li>
+                        <li class="toc-item" onclick="goToSlide(4)"><span class="toc-number">2.</span> Two Views of an Operating System</li>
+                        <li class="toc-item" onclick="goToSlide(7)"><span class="toc-number">3.</span> Evolution of Operating Systems</li>
+                        <li class="toc-item" onclick="goToSlide(12)"><span class="toc-number">4.</span> Types of Operating Systems</li>
+                    </ul>
+                </div>
+                <div class="slide-footer">Designed by Nikesh Shah & Niuj Poudel</div>
+                <div class="slide-number">Slide 2 of 14</div>
+            </div>
+        </div>
+
+        <!-- Slide 3: Definition -->
+        <div class="slide-container">
+            <div id="slide-3" class="slide">
+                <div class="slide-content">
+                    <h2>What is an Operating System?</h2>
+                    <p class="mt-8 text-center text-xl">An <strong>Operating System (OS)</strong> is a software program that acts as an intermediary between a computer user and the computer hardware.
+                    </p>
+                    <div class="grid-container mt-12">
+                        <div class="card">
+                            <h3>Primary Goals</h3>
+                            <ul>
+                                <li>Execute user programs and make solving user problems easier.</li>
+                                <li>Make the computer system convenient to use.</li>
+                                <li>Utilize the computer hardware in an efficient manner.</li>
+                            </ul>
+                        </div>
+                        <div class="card">
+                            <h3>Key Analogy</h3>
+                            <p>Think of an OS as the government of a country. It doesn't do "real" work on its own, but it provides the infrastructure and environment for other programs (citizens) to do useful work.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="slide-footer">Designed by Nikesh Shah & Niuj Poudel</div>
+                <div class="slide-number">Slide 3 of 14</div>
+            </div>
+        </div>
+
+        <!-- Slide 4: Two Views - User View -->
+        <div class="slide-container">
+            <div id="slide-4" class="slide">
+                <div class="slide-content">
+                    <h2>Two Views of an OS: The User View</h2>
+                    <p>The user's view of the computer varies according to the interface being used.</p>
+                    <div class="grid-container mt-8">
+                        <div class="card">
+                            <h3>PC / Workstation</h3>
+                            <p>Users expect ease of use and good performance. The OS is designed for a single user, with a focus on responsiveness and user experience (e.g., Windows, macOS).</p>
+                        </div>
+                        <div class="card">
+                            <h3>Mainframe / Minicomputer</h3>
+                            <p>Users (terminals) share resources. The OS is designed to maximize resource utilization, ensuring all users get fair access (e.g., z/OS).</p>
+                        </div>
+                         <div class="card">
+                            <h3>Handheld / Mobile</h3>
+                            <p>Users expect a simple interface, long battery life, and connectivity. The OS is optimized for touch input and power efficiency (e.g., Android, iOS).</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="slide-footer">Designed by Nikesh Shah & Niuj Poudel</div>
+                <div class="slide-number">Slide 4 of 14</div>
+            </div>
         </div>
         
-        <footer id="footer">
-            <p class="developer-name">Designed & Developed by Aadarsha Jha</p>
-            <p class="copyright">&copy; 2025. All Rights Reserved.</p>
-        </footer>
+        <!-- Slide 5: Two Views - System View -->
+        <div class="slide-container">
+            <div id="slide-5" class="slide">
+                <div class="slide-content">
+                    <h2>Two Views of an OS: The System View</h2>
+                    <p>From the computer's point of view, the OS is the program most intimately involved with the hardware. In this context, the OS is a <strong>resource allocator</strong>.</p>
+                    <div class="mt-8">
+                        <ul>
+                            <li>Manages all hardware resources (CPU time, memory space, file storage, I/O devices).</li>
+                            <li>Decides between conflicting requests for efficient and fair resource use.</li>
+                            <li>Acts as a control program to manage the execution of user programs to prevent errors and improper use of the computer.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="slide-footer">Designed by Nikesh Shah & Niuj Poudel</div>
+                <div class="slide-number">Slide 5 of 14</div>
+            </div>
+        </div>
+
+        <!-- Slide 6: OS as a Bridge -->
+        <div class="slide-container">
+            <div id="slide-6" class="slide">
+                <div class="slide-content text-center">
+                    <h2>The OS as a Bridge</h2>
+                    <p>The OS abstracts the hardware's complexity, providing a clean, consistent interface for applications.</p>
+                    <div class="flex justify-around items-center w-full h-3/4 mt-4">
+                        <div class="text-center">
+                            <div class="text-6xl mb-4">👤</div>
+                            <div class="text-xl font-bold">Users & Applications</div>
+                        </div>
+                        <div class="text-5xl font-bold text-blue-500">↔</div>
+                        <div class="text-center p-8 bg-blue-100 rounded-xl">
+                             <div class="text-6xl mb-4">⚙️</div>
+                             <div class="text-xl font-bold">Operating System</div>
+                        </div>
+                        <div class="text-5xl font-bold text-blue-500">↔</div>
+                        <div class="text-center">
+                            <div class="text-6xl mb-4">💻</div>
+                            <div class="text-xl font-bold">Computer Hardware</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="slide-footer">Designed by Nikesh Shah & Niuj Poudel</div>
+                <div class="slide-number">Slide 6 of 14</div>
+            </div>
+        </div>
+
+        <!-- Slide 7: Evolution - The Beginning -->
+        <div class="slide-container">
+            <div id="slide-7" class="slide">
+                <div class="slide-content">
+                    <h2>Evolution of Operating Systems</h2>
+                    <div class="card mt-8">
+                        <h3>The Early Days: Serial Processing (1940s-1950s)</h3>
+                        <ul>
+                            <li>No OS. Programmers interacted directly with the hardware.</li>
+                            <li>Computers ran one job at a time, entered via punch cards or paper tape.</li>
+                            <li>Extremely inefficient due to setup time between jobs. The CPU was idle most of the time.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="slide-footer">Designed by Nikesh Shah & Niuj Poudel</div>
+                <div class="slide-number">Slide 7 of 14</div>
+            </div>
+        </div>
+
+        <!-- Slide 8: Evolution - Batch Systems -->
+        <div class="slide-container">
+            <div id="slide-8" class="slide">
+                <div class="slide-content">
+                    <h2>Evolution: Batch Systems (1950s-1960s)</h2>
+                     <p>The first rudimentary OS was born to manage batches of jobs.</p>
+                    <div class="card mt-8">
+                        <ul>
+                            <li>An operator would group similar jobs (e.g., all FORTRAN programs) together into a "batch".</li>
+                            <li>The OS, a simple program called a "monitor," would load a job, run it, and then automatically load the next one.</li>
+                            <li>This improved performance by reducing setup time, but the CPU was still often idle (e.g., waiting for slow I/O).</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="slide-footer">Designed by Nikesh Shah & Niuj Poudel</div>
+                <div class="slide-number">Slide 8 of 14</div>
+            </div>
+        </div>
+
+        <!-- Slide 9: Evolution - Multiprogramming -->
+        <div class="slide-container">
+            <div id="slide-9" class="slide">
+                <div class="slide-content">
+                    <h2>Evolution: Multiprogramming (1960s-1970s)</h2>
+                    <p>A major leap in efficiency by keeping the CPU busy.</p>
+                    <div class="card mt-8">
+                        <ul>
+                            <li>The OS keeps several jobs in memory simultaneously.</li>
+                            <li>When one job has to wait for an I/O operation to complete, the OS switches the CPU to another job.</li>
+                            <li>This significantly increased CPU utilization and system throughput.</li>
+                            <li>Requires memory management and CPU scheduling from the OS.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="slide-footer">Designed by Nikesh Shah & Niuj Poudel</div>
+                <div class="slide-number">Slide 9 of 14</div>
+            </div>
+        </div>
+
+        <!-- Slide 10: Evolution - Time-Sharing -->
+        <div class="slide-container">
+            <div id="slide-10" class="slide">
+                <div class="slide-content">
+                    <h2>Evolution: Time-Sharing (Multitasking)</h2>
+                    <p>A logical extension of multiprogramming, allowing interactive use.</p>
+                    <div class="card mt-8">
+                        <ul>
+                            <li>The CPU switches between jobs so frequently that users can interact with each program while it is running.</li>
+                            <li>This creates the illusion that each user has their own dedicated machine.</li>
+                            <li>Requires sophisticated CPU scheduling algorithms and memory protection.</li>
+                            <li>Led to the development of interactive systems and personal computing.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="slide-footer">Designed by Nikesh Shah & Niuj Poudel</div>
+                <div class="slide-number">Slide 10 of 14</div>
+            </div>
+        </div>
+        
+        <!-- Slide 11: Evolution - Modern -->
+        <div class="slide-container">
+            <div id="slide-11" class="slide">
+                <div class="slide-content">
+                    <h2>Evolution: Personal & Modern Systems</h2>
+                    <div class="grid-container mt-8">
+                        <div class="card">
+                            <h3>Personal Computers (PCs)</h3>
+                            <p>Appeared in the 1970s. Early OSs (like MS-DOS) were not multi-user or multitasking. Evolved into powerful systems (Windows, macOS, Linux) with features from earlier, larger systems.</p>
+                        </div>
+                        <div class="card">
+                            <h3>Modern Era</h3>
+                            <p>Focus on distributed systems (networked computers), mobile devices (Android, iOS), and virtualization (running multiple OSs on one machine). Security and user interface are paramount.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="slide-footer">Designed by Nikesh Shah & Niuj Poudel</div>
+                <div class="slide-number">Slide 11 of 14</div>
+            </div>
+        </div>
+        
+        <!-- Slide 12: Types of OS -->
+        <div class="slide-container">
+            <div id="slide-12" class="slide">
+                <div class="slide-content">
+                    <h2>Types of Operating Systems</h2>
+                    <p>Operating systems can be classified into several types based on their capabilities and the type of systems they control.</p>
+                    <div class="grid-container mt-8 text-center">
+                        <div class="card"><h3>Batch OS</h3></div>
+                        <div class="card"><h3>Time-Sharing OS</h3></div>
+                        <div class="card"><h3>Distributed OS</h3></div>
+                        <div class="card"><h3>Network OS</h3></div>
+                        <div class="card"><h3>Real-Time OS</h3></div>
+                        <div class="card"><h3>Mobile OS</h3></div>
+                    </div>
+                </div>
+                <div class="slide-footer">Designed by Nikesh Shah & Niuj Poudel</div>
+                <div class="slide-number">Slide 12 of 14</div>
+            </div>
+        </div>
+
+        <!-- Slide 13: Types of OS - Detailed -->
+        <div class="slide-container">
+            <div id="slide-13" class="slide">
+                <div class="slide-content">
+                    <h2>Types of OS - In Detail</h2>
+                    <div class="grid-container mt-4">
+                        <div class="card">
+                            <h3>Distributed OS</h3>
+                            <p>Manages a group of independent computers and makes them appear to be a single computer. Users are unaware of where their programs are being run or where their files are stored.</p>
+                        </div>
+                        <div class="card">
+                            <h3>Real-Time OS (RTOS)</h3>
+                            <p>Designed for systems where the time taken to process an input is a critical constraint. Used in industrial control, robotics, and scientific instruments. (e.g., VxWorks, QNX).</p>
+                        </div>
+                        <div class="card">
+                            <h3>Mobile OS</h3>
+                            <p>Designed specifically for smartphones, tablets, and other handheld devices. Key features are touch interface, power management, and connectivity. (e.g., Android, iOS).</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="slide-footer">Designed by Nikesh Shah & Niuj Poudel</div>
+                <div class="slide-number">Slide 13 of 14</div>
+            </div>
+        </div>
+
+        <!-- Slide 14: Thank You -->
+        <div class="slide-container">
+            <div id="slide-14" class="slide">
+                <div class="slide-content text-center flex flex-col justify-center items-center">
+                    <h1 class="bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-teal-400">Thank You!</h1>
+                    <p class="text-2xl text-gray-600 mt-4">Any Questions?</p>
+                     <div class="mt-20">
+                        <p class="text-lg font-medium text-gray-700">A Presentation by:</p>
+                        <p class="text-xl font-semibold text-gray-800">Nikesh Shah & Niuj Poudel</p>
+                    </div>
+                </div>
+                <div class="slide-number">Slide 14 of 14</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation and Download UI -->
+    <div class="nav-buttons">
+        <button id="prev-btn" class="nav-button">←</button>
+        <button id="next-btn" class="nav-button">→</button>
+    </div>
+
+    <div class="download-menu">
+        <div class="download-options">
+            <div id="download-pptx" class="download-option">Download as .pptx</div>
+            <div id="download-docx" class="download-option">Download as .docx</div>
+        </div>
+        <button class="nav-button">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+        </button>
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const slides = document.querySelectorAll('.slide');
-            const prevBtn = document.getElementById('prev-btn');
-            const nextBtn = document.getElementById('next-btn');
-            const slideCounter = document.getElementById('slide-counter');
-            const fullscreenBtn = document.getElementById('fullscreen-btn');
-            const fullscreenEnterIcon = document.getElementById('fullscreen-enter-icon');
-            const fullscreenExitIcon = document.getElementById('fullscreen-exit-icon');
+        // --- Basic Slide Navigation ---
+        let currentSlide = 1;
+        const totalSlides = 14;
+        const slides = document.querySelectorAll('.slide');
+
+        function showSlide(slideNumber) {
+            slides.forEach(slide => slide.classList.remove('active'));
+            const targetSlide = document.getElementById(`slide-${slideNumber}`);
+            if (targetSlide) {
+                targetSlide.classList.add('active');
+                targetSlide.parentElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        }
+
+        function nextSlide() {
+            if (currentSlide < totalSlides) {
+                currentSlide++;
+                showSlide(currentSlide);
+            }
+        }
+
+        function prevSlide() {
+            if (currentSlide > 1) {
+                currentSlide--;
+                showSlide(currentSlide);
+            }
+        }
+        
+        function goToSlide(slideNumber) {
+            if (slideNumber >= 1 && slideNumber <= totalSlides) {
+                currentSlide = slideNumber;
+                showSlide(currentSlide);
+            }
+        }
+
+        document.getElementById('next-btn').addEventListener('click', nextSlide);
+        document.getElementById('prev-btn').addEventListener('click', prevSlide);
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') nextSlide();
+            if (e.key === 'ArrowLeft') prevSlide();
+        });
+
+        window.onload = () => showSlide(currentSlide);
+
+        // --- Content Extraction and Download Logic ---
+
+        // Helper to get text from an element, defaulting to empty string
+        const getText = (el, selector) => el.querySelector(selector)?.innerText || '';
+        const getListItems = (el, selector) => Array.from(el.querySelectorAll(selector)).map(item => item.innerText);
+
+        // --- PPTX Download Logic ---
+        document.getElementById('download-pptx').addEventListener('click', () => {
+            const pptx = new PptxGenJS();
+            pptx.layout = 'LAYOUT_WIDE';
             
-            let currentSlide = 0;
-            const totalSlides = slides.length;
+            const footerText = 'Designed by Nikesh Shah & Niuj Poudel';
 
-            function showSlide(index) {
-                slides.forEach((slide) => slide.classList.remove('active'));
-                if (slides[index]) slides[index].classList.add('active');
-                updateControls();
-            }
+            // Iterate through each slide and add its content to the PPTX
+            for (let i = 1; i <= totalSlides; i++) {
+                const slide = pptx.addSlide();
+                const slideElement = document.getElementById(`slide-${i}`);
 
-            function updateControls() {
-                slideCounter.textContent = `Slide ${currentSlide + 1} / ${totalSlides}`;
-                prevBtn.disabled = currentSlide === 0;
-                nextBtn.disabled = currentSlide === totalSlides - 1;
-            }
+                // Common slide elements
+                slide.addText(`Slide ${i} of ${totalSlides}`, { x: 8.8, y: 5.3, fontSize: 10, color: 'a0aec0' });
+                slide.addText(footerText, { x: 0.5, y: 5.3, fontSize: 10, color: 'a0aec0' });
+                
+                const title = getText(slideElement, 'h1, h2');
+                slide.addText(title, { x: 0.5, y: 0.5, w: '90%', h: 1, fontSize: 24, bold: true, color: '2d3748', align: 'center' });
 
-            function toggleFullScreen() {
-                if (!document.fullscreenElement) {
-                    document.documentElement.requestFullscreen().catch(err => console.error(`Fullscreen error: ${err.message}`));
+                const mainParagraph = getText(slideElement, 'p');
+                let bodyOptions = { x: 1, y: 1.5, w: '80%', h: 3.5, fontSize: 14, color: '4a5568' };
+
+                if (i === 1 || i === 14) { // Title and Thank you slides
+                    slide.addText(getText(slideElement, '.text-2xl'), { ...bodyOptions, y: 2.5, align: 'center' });
+                    slide.addText(getText(slideElement, '.mt-20'), { ...bodyOptions, y: 3.5, align: 'center' });
+                } else if (i === 2) { // TOC
+                    const tocItems = getListItems(slideElement, '.toc-item');
+                    slide.addText(tocItems.join('\n'), { ...bodyOptions, bullet: true });
+                } else if (i === 6) { // Bridge slide
+                     slide.addText('The OS acts as a bridge:\n\nUsers & Applications <--> Operating System <--> Computer Hardware', { ...bodyOptions, align: 'center' });
                 } else {
-                    if (document.exitFullscreen) document.exitFullscreen();
+                    if(mainParagraph) slide.addText(mainParagraph, bodyOptions);
+                    
+                    const listItems = getListItems(slideElement, 'li');
+                    if (listItems.length > 0) {
+                        slide.addText(listItems.join('\n'), { ...bodyOptions, y: 2.2, bullet: true });
+                    }
+
+                    const cards = slideElement.querySelectorAll('.card');
+                    if (cards.length > 0) {
+                        let cardText = '';
+                        cards.forEach(card => {
+                            const cardTitle = getText(card, 'h3');
+                            const cardContent = getText(card, 'p') || getListItems(card, 'li').join(', ');
+                            cardText += `${cardTitle}\n${cardContent}\n\n`;
+                        });
+                        slide.addText(cardText, { ...bodyOptions, y: 2.2 });
+                    }
                 }
             }
+
+            pptx.writeFile({ fileName: 'Operating-Systems-Presentation.pptx' });
+        });
+
+        // --- DOCX Download Logic ---
+        document.getElementById('download-docx').addEventListener('click', () => {
+            const { Document, Packer, Paragraph, TextRun, HeadingLevel, PageBreak, AlignmentType, Bullet } = docx;
             
-            function updateFullscreenIcons() {
-                if (document.fullscreenElement) {
-                    fullscreenEnterIcon.classList.add('hidden');
-                    fullscreenExitIcon.classList.remove('hidden');
-                } else {
-                    fullscreenEnterIcon.classList.remove('hidden');
-                    fullscreenExitIcon.classList.add('hidden');
+            const docChildren = [];
+            const footerText = 'Designed by Nikesh Shah & Niuj Poudel';
+
+            for (let i = 1; i <= totalSlides; i++) {
+                const slideElement = document.getElementById(`slide-${i}`);
+                
+                const title = getText(slideElement, 'h1, h2');
+                docChildren.push(new Paragraph({
+                    text: title,
+                    heading: HeadingLevel.HEADING_1,
+                    alignment: AlignmentType.CENTER,
+                    spacing: { after: 200 }
+                }));
+
+                const mainParagraph = getText(slideElement, 'p');
+                 if(mainParagraph) {
+                    docChildren.push(new Paragraph({
+                        children: [new TextRun(mainParagraph)],
+                        spacing: { after: 200 }
+                    }));
+                }
+
+                const listItems = getListItems(slideElement, 'li');
+                listItems.forEach(item => {
+                    docChildren.push(new Paragraph({
+                        text: item,
+                        bullet: { level: 0 }
+                    }));
+                });
+                
+                const cards = slideElement.querySelectorAll('.card');
+                cards.forEach(card => {
+                    const cardTitle = getText(card, 'h3');
+                    if(cardTitle) {
+                        docChildren.push(new Paragraph({
+                            text: cardTitle,
+                            heading: HeadingLevel.HEADING_3,
+                            spacing: { before: 200 }
+                        }));
+                    }
+                    const cardContent = getText(card, 'p') || getListItems(card, 'li').join('; ');
+                     docChildren.push(new Paragraph({
+                        text: cardContent,
+                        bullet: card.querySelector('li') ? { level: 0 } : undefined
+                    }));
+                });
+
+                if (i < totalSlides) {
+                    docChildren.push(new Paragraph({ children: [new PageBreak()] }));
                 }
             }
 
-            nextBtn.addEventListener('click', () => { if (currentSlide < totalSlides - 1) { currentSlide++; showSlide(currentSlide); } });
-            prevBtn.addEventListener('click', () => { if (currentSlide > 0) { currentSlide--; showSlide(currentSlide); } });
-            fullscreenBtn.addEventListener('click', toggleFullScreen);
-            document.addEventListener('fullscreenchange', updateFullscreenIcons);
-
-            document.addEventListener('keydown', (e) => {
-                if (e.key === 'ArrowRight' && !nextBtn.disabled) nextBtn.click();
-                else if (e.key === 'ArrowLeft' && !prevBtn.disabled) prevBtn.click();
-                else if (e.key.toLowerCase() === 'f') { e.preventDefault(); toggleFullScreen(); }
+            const doc = new Document({
+                sections: [{
+                    properties: {},
+                    headers: {
+                        default: new docx.Header({
+                            children: [new Paragraph({
+                                children: [new TextRun(`Operating Systems Presentation`)],
+                                alignment: AlignmentType.RIGHT,
+                            })],
+                        }),
+                    },
+                    footers: {
+                        default: new docx.Footer({
+                            children: [new Paragraph({
+                                children: [new TextRun(footerText)],
+                                alignment: AlignmentType.LEFT,
+                            })],
+                        }),
+                    },
+                    children: docChildren,
+                }],
             });
 
-            showSlide(currentSlide);
-            updateFullscreenIcons();
+            Packer.toBlob(doc).then(blob => {
+                saveAs(blob, "Operating-Systems-Presentation.docx");
+            });
         });
     </script>
-
 </body>
 </html>
-
-<!-- This HTML document provides a comprehensive presentation on the topic of Monolith vs. Microservices, tailored for a Nepali audience. It uses Tailwind CSS for styling and includes interactive elements for navigation and fullscreen mode. The content is structured into slides, each focusing on different aspects of the topic, with analogies relevant to the local context. -->
-<!-- The presentation is designed to be visually appealing and easy to follow, with a focus on practical examples and clear explanations. The footer includes developer credits and copyright information. -->
-<!-- The JavaScript handles slide navigation, fullscreen toggling, and keyboard shortcuts for an enhanced user experience. The code is structured to be responsive and accessible, ensuring it works well on various devices. -->
-<!-- The use of Nepali cultural references, such as Bhat-Bhateni and Labim  Mall, makes the content relatable and engaging for the target audience. -->
-<!-- The presentation is suitable for educational purposes, tech meetups, or online learning platforms, providing a solid foundation for understanding software architecture choices in the context of Nepal's growing digital landscape. -->
-<!-- The code is well-commented and organized, making it easy for developers to understand and modify as needed. The use of modern web technologies ensures compatibility with current browsers and devices, enhancing the overall user experience. -->
